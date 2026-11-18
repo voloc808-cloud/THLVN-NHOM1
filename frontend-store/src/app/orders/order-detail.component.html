@@ -1,0 +1,32 @@
+<a routerLink="/orders">← Lịch sử đơn hàng</a>
+@if (success) {
+  <p class="success" role="status">Đặt hàng thành công! Cảm ơn bạn đã mua sắm tại Phone Store.</p>
+}
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+@if (order(); as o) {
+  <section class="panel">
+    <div class="page-heading">
+      <h1>Đơn #{{ o._id.slice(-8).toUpperCase() }}</h1>
+      <span class="badge">{{ labels[o.status] }}</span>
+    </div>
+    <p class="muted">{{ o.createdAt | date: 'dd/MM/yyyy HH:mm' }} · Thanh toán COD</p>
+    <h2>Thông tin nhận hàng</h2>
+    <p>{{ o.recipient.fullName }} · {{ o.recipient.phone }}</p>
+    <p>{{ o.recipient.address }}</p>
+    <h2>Sản phẩm</h2>
+    @for (item of o.items; track item.productId) {
+      <div class="line">
+        <span
+          >{{ item.name }} × {{ item.quantity
+          }}<small>{{ item.price | number: '1.0-0' }} ₫ / sản phẩm</small></span
+        ><strong>{{ item.price * item.quantity | number: '1.0-0' }} ₫</strong>
+      </div>
+    }
+    <div class="line">
+      <h2>Tổng tiền</h2>
+      <h2>{{ o.total | number: '1.0-0' }} ₫</h2>
+    </div>
+  </section>
+}

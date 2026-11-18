@@ -1,0 +1,69 @@
+<span class="eyebrow">MUA SẮM CỦA BẠN</span>
+<h1>Giỏ hàng</h1>
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (loading()) {
+  <p class="empty">Đang tải giỏ hàng…</p>
+} @else if (cart().items.length) {
+  <div class="cart-layout">
+    <section class="panel">
+      @for (item of cart().items; track item.productId) {
+        <article class="cart-row">
+          <img
+            [src]="item.image || '/phone-placeholder.svg'"
+            [alt]="item.name"
+            (error)="imageError($event)"
+          />
+          <div>
+            <a [routerLink]="['/products/detail', item.productId]"
+              ><h3>{{ item.name }}</h3></a
+            >
+            <p>{{ item.price | number: '1.0-0' }} ₫</p>
+            @if (!item.available || item.quantity > item.stock) {
+              <p class="error">Sản phẩm ngừng bán hoặc không đủ tồn kho.</p>
+            }
+            <div class="quantity">
+              <button
+                class="secondary"
+                (click)="update(item.productId, item.quantity - 1)"
+                [disabled]="busy()"
+                aria-label="Giảm số lượng"
+              >
+                −</button
+              ><span>{{ item.quantity }}</span
+              ><button
+                class="secondary"
+                (click)="update(item.productId, item.quantity + 1)"
+                [disabled]="busy() || item.quantity >= item.stock"
+                aria-label="Tăng số lượng"
+              >
+                +</button
+              ><button
+                class="text-button danger"
+                (click)="update(item.productId, 0)"
+                [disabled]="busy()"
+              >
+                Xóa
+              </button>
+            </div>
+          </div>
+          <strong>{{ item.price * item.quantity | number: '1.0-0' }} ₫</strong>
+        </article>
+      }
+    </section>
+    <aside class="panel">
+      <h2>Tóm tắt giỏ hàng</h2>
+      <p>Tổng tiền</p>
+      <p class="price">{{ cart().total | number: '1.0-0' }} ₫</p>
+      <a routerLink="/checkout" class="button">Tiến hành thanh toán →</a>
+      <p><a routerLink="/products">Tiếp tục mua hàng</a></p>
+    </aside>
+  </div>
+} @else {
+  <div class="empty panel">
+    <h2>Giỏ hàng đang trống</h2>
+    <p>Khám phá điện thoại và chọn sản phẩm bạn yêu thích.</p>
+    <a routerLink="/products" class="button">Tiếp tục mua hàng</a>
+  </div>
+}

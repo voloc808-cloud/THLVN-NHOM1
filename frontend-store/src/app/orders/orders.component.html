@@ -1,0 +1,27 @@
+<span class="eyebrow">TÀI KHOẢN CỦA BẠN</span>
+<h1>Lịch sử đơn hàng</h1>
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+@if (loading()) {
+  <p>Đang tải…</p>
+} @else {
+  @for (order of orders(); track order._id) {
+    <article class="panel order-row">
+      <div>
+        <h3>Đơn #{{ order._id.slice(-8).toUpperCase() }}</h3>
+        <p class="muted">{{ order.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+        <span class="badge">{{ labels[order.status] }}</span>
+      </div>
+      <div>
+        <strong>{{ order.total | number: '1.0-0' }} ₫</strong>
+        <p><a [routerLink]="['/orders', order._id]">Xem chi tiết →</a></p>
+      </div>
+    </article>
+  } @empty {
+    <div class="empty panel">
+      <p>Bạn chưa có đơn hàng nào.</p>
+      <a routerLink="/products">Khám phá sản phẩm →</a>
+    </div>
+  }
+}
