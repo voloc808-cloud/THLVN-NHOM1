@@ -1,0 +1,23 @@
+<span class="eyebrow">LUÔN ĐƯỢC CẬP NHẬT</span>
+<h1>Thông báo</h1>
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+@if (loading()) {
+  <p>Đang tải…</p>
+} @else {
+  @for (item of items(); track item._id) {
+    <article class="panel notification" [class.unread]="!item.read">
+      <div>
+        <h3>{{ item.message }}</h3>
+        <p class="muted">{{ item.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+        <a [routerLink]="['/orders', item.order]" (click)="read(item)">Xem đơn hàng →</a>
+      </div>
+      @if (!item.read) {
+        <button class="secondary" (click)="read(item)">Đánh dấu đã đọc</button>
+      }
+    </article>
+  } @empty {
+    <p class="panel empty">Bạn chưa có thông báo.</p>
+  }
+}
