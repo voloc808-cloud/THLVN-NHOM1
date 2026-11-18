@@ -1,0 +1,9 @@
+.auth-card {
+  max-width: 540px;
+  margin: auto;
+}
+form {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
