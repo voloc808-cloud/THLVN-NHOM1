@@ -1,0 +1,18 @@
+const router = require('express').Router();
+const { authenticate, admin } = require('../../middleware/auth');
+const products = require('../product/product.controller');
+const users = require('../user/user.controller');
+const orders = require('../order/order.controller');
+router.use(authenticate, admin);
+router.get('/dashboard', require('./admin.controller').dashboard);
+router.get('/products', products.adminList);
+router.post('/products', products.create);
+router.put('/products/:id', products.update);
+router.delete('/products/:id', products.remove);
+router.get('/users', users.list);
+router.get('/users/:id', users.detail);
+router.patch('/users/:id/lock', users.lock);
+router.get('/orders', orders.adminList);
+router.get('/orders/:id', orders.adminDetail);
+router.patch('/orders/:id/status', orders.status);
+module.exports = router;

@@ -1,0 +1,12 @@
+.detail {
+  margin-top: 24px;
+}
+td small {
+  display: block;
+  color: #788599;
+  margin-top: 6px;
+}
+td button {
+  margin-right: 12px;
+  margin-bottom: 6px;
+}

@@ -1,0 +1,51 @@
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+<section class="panel">
+  <h2>Quản lý người dùng</h2>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Họ tên</th>
+          <th>Email</th>
+          <th>Vai trò</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of items(); track u._id) {
+          <tr>
+            <td>{{ u.fullName }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.role }}</td>
+            <td>{{ u.isLocked ? 'Đã khóa' : 'Hoạt động' }}</td>
+            <td>
+              <button class="text-button" (click)="selected.set(u)">Chi tiết</button>
+              @if (u.role === 'USER') {
+                <button class="text-button" [disabled]="busy()" (click)="toggle(u)">
+                  {{ u.isLocked ? 'Mở khóa' : 'Khóa' }}
+                </button>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">Chưa có người dùng.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+@if (selected(); as u) {
+  <section class="panel user-detail">
+    <h2>{{ u.fullName }}</h2>
+    <p>Email: {{ u.email }}</p>
+    <p>Số điện thoại: {{ u.phone }}</p>
+    <p>Địa chỉ: {{ u.address }}</p>
+    <p>Vai trò: {{ u.role }} · {{ u.isLocked ? 'Đã khóa' : 'Hoạt động' }}</p>
+    <button class="secondary" (click)="selected.set(null)">Đóng chi tiết</button>
+  </section>
+}

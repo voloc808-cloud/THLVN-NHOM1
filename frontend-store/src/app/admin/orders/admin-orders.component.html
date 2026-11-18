@@ -1,0 +1,62 @@
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+<section class="panel">
+  <h2>Quản lý đơn hàng</h2>
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Mã đơn</th>
+          <th>Người nhận</th>
+          <th>Tổng tiền</th>
+          <th>Trạng thái</th>
+          <th>Cập nhật</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (o of items(); track o._id) {
+          <tr>
+            <td>
+              <button class="text-button" (click)="selected.set(o)">
+                #{{ o._id.slice(-8).toUpperCase() }}</button
+              ><small>{{ o.createdAt | date: 'dd/MM/yyyy' }}</small>
+            </td>
+            <td>{{ o.recipient.fullName }}</td>
+            <td>{{ o.total | number: '1.0-0' }} ₫</td>
+            <td>
+              <span class="badge">{{ labels[o.status] }}</span>
+            </td>
+            <td>
+              @for (status of next[o.status]; track status) {
+                <button class="text-button" [disabled]="busy()" (click)="update(o, status)">
+                  {{ labels[status] }}
+                </button>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">Chưa có đơn hàng.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+@if (selected(); as o) {
+  <section class="panel detail">
+    <h2>Đơn #{{ o._id.slice(-8).toUpperCase() }}</h2>
+    <p>{{ o.recipient.fullName }} · {{ o.recipient.phone }}</p>
+    <p>{{ o.recipient.address }}</p>
+    <p>Thanh toán COD · {{ labels[o.status] }}</p>
+    @for (item of o.items; track item.productId) {
+      <p>
+        {{ item.name }} × {{ item.quantity }} · {{ item.price | number: '1.0-0' }} ₫ / sản phẩm ·
+        <strong>{{ item.price * item.quantity | number: '1.0-0' }} ₫</strong>
+      </p>
+    }
+    <h3>Tổng tiền: {{ o.total | number: '1.0-0' }} ₫</h3>
+    <button class="secondary" (click)="selected.set(null)">Đóng chi tiết</button>
+  </section>
+}
