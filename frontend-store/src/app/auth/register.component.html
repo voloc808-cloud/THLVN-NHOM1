@@ -1,0 +1,57 @@
+<section class="panel auth-card">
+  <span class="eyebrow">THAM GIA PHONE STORE</span>
+  <h1>Tạo tài khoản</h1>
+  <form #registration="ngForm" (ngSubmit)="submit()">
+    <label
+      >Họ tên<input
+        name="fullName"
+        [(ngModel)]="form.fullName"
+        required
+        maxlength="200"
+        autocomplete="name"
+    /></label>
+    <label
+      >Email<input
+        name="email"
+        [(ngModel)]="form.email"
+        type="email"
+        required
+        email
+        autocomplete="email"
+    /></label>
+    <label
+      >Mật khẩu<input
+        name="password"
+        [(ngModel)]="form.password"
+        type="password"
+        required
+        minlength="8"
+        autocomplete="new-password"
+      /><small>Tối thiểu 8 ký tự.</small></label
+    >
+    <label
+      >Số điện thoại<input
+        name="phone"
+        [(ngModel)]="form.phone"
+        type="tel"
+        required
+        autocomplete="tel"
+    /></label>
+    <label
+      >Địa chỉ<textarea
+        name="address"
+        [(ngModel)]="form.address"
+        required
+        maxlength="500"
+        autocomplete="street-address"
+      ></textarea>
+    </label>
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    <button [disabled]="registration.invalid || busy()">
+      {{ busy() ? 'Đang tạo…' : 'Đăng ký' }}
+    </button>
+  </form>
+  <p>Đã có tài khoản? <a routerLink="/login">Đăng nhập</a></p>
+</section>
