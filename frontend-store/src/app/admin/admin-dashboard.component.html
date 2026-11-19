@@ -1,0 +1,21 @@
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+@if (data(); as d) {
+  <div class="stats">
+    <article class="panel">
+      <span>Sản phẩm</span><strong>{{ d.products }}</strong>
+    </article>
+    <article class="panel">
+      <span>Khách hàng</span><strong>{{ d.users }}</strong>
+    </article>
+    <article class="panel">
+      <span>Đơn hàng</span><strong>{{ d.orders }}</strong>
+    </article>
+    <article class="panel">
+      <span>Doanh thu đã giao</span><strong>{{ d.revenue | number: '1.0-0' }} ₫</strong>
+    </article>
+  </div>
+} @else {
+  <p>Đang tải tổng quan…</p>
+}

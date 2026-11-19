@@ -1,0 +1,98 @@
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+@if (message()) {
+  <p class="success">{{ message() }}</p>
+}
+<form class="panel" #productForm="ngForm" (ngSubmit)="save()">
+  <h2>{{ editId ? 'Chỉnh sửa sản phẩm' : 'Thêm sản phẩm' }}</h2>
+  <div class="fields">
+    <label>Tên điện thoại<input name="name" [(ngModel)]="form.name" required /></label
+    ><label>Hãng<input name="brand" [(ngModel)]="form.brand" required /></label
+    ><label
+      >Giá (VND)<input
+        name="price"
+        type="number"
+        [(ngModel)]="form.price"
+        required
+        min="0"
+        step="1" /></label
+    ><label
+      >Số lượng tồn<input
+        name="stock"
+        type="number"
+        [(ngModel)]="form.stock"
+        required
+        min="0"
+        step="1" /></label
+    ><label
+      >URL hình ảnh<input
+        name="image"
+        [(ngModel)]="form.image"
+        type="url"
+        placeholder="https://..." /></label
+    ><label
+      >Trạng thái<select name="status" [(ngModel)]="form.status">
+        <option value="ACTIVE">Đang bán</option>
+        <option value="HIDDEN">Ẩn</option>
+      </select></label
+    ><label
+      >Mô tả<textarea name="description" [(ngModel)]="form.description" rows="4"></textarea></label
+    ><label
+      >Thông số kỹ thuật<textarea
+        name="specs"
+        [(ngModel)]="specsText"
+        rows="4"
+        placeholder="RAM: 8 GB&#10;Bộ nhớ: 256 GB"
+      ></textarea>
+    </label>
+  </div>
+  <div class="button-row">
+    <button [disabled]="productForm.invalid || busy()">Lưu sản phẩm</button>
+    @if (editId) {
+      <button type="button" class="secondary" (click)="reset()">Hủy chỉnh sửa</button>
+    }
+  </div>
+</form>
+<section class="panel table-panel">
+  <h2>Danh sách sản phẩm</h2>
+  @if (loading()) {
+    <p>Đang tải…</p>
+  }
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Sản phẩm</th>
+          <th>Giá</th>
+          <th>Tồn kho</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of items(); track p._id) {
+          <tr>
+            <td>
+              <strong>{{ p.name }}</strong
+              ><small>{{ p.brand }}</small>
+            </td>
+            <td>{{ p.price | number: '1.0-0' }} ₫</td>
+            <td>{{ p.stock }}</td>
+            <td>{{ p.status === 'ACTIVE' ? 'Đang bán' : 'Ẩn' }}</td>
+            <td>
+              <button class="text-button" (click)="edit(p)" [disabled]="busy()">Sửa</button>
+              <button class="text-button danger" (click)="remove(p)" [disabled]="busy()">
+                Xóa
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">Chưa có sản phẩm.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

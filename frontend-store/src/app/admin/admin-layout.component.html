@@ -1,0 +1,10 @@
+<span class="eyebrow">KHÔNG GIAN QUẢN TRỊ</span>
+<h1>Admin Dashboard</h1>
+<nav class="admin-nav" aria-label="Quản trị">
+  <a routerLink="/admin" routerLinkActive="selected" [routerLinkActiveOptions]="{ exact: true }"
+    >Tổng quan</a
+  ><a routerLink="/admin/products" routerLinkActive="selected">Sản phẩm</a
+  ><a routerLink="/admin/users" routerLinkActive="selected">Người dùng</a
+  ><a routerLink="/admin/orders" routerLinkActive="selected">Đơn hàng</a>
+</nav>
+<router-outlet />

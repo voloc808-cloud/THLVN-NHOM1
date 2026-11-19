@@ -1,0 +1,18 @@
+.admin-nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #dae3e9;
+  padding-bottom: 16px;
+}
+.admin-nav a {
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: #fff;
+  color: #44546b;
+}
+.admin-nav .selected {
+  background: #0b8062;
+  color: white;
+}
