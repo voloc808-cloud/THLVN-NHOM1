@@ -1,0 +1,62 @@
+<span class="eyebrow">HOÀN TẤT MUA SẮM</span>
+<h1>Thanh toán</h1>
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (loading()) {
+  <p>Đang tải…</p>
+} @else if (!cart().items.length) {
+  <div class="empty panel">
+    <p>Giỏ hàng đang trống.</p>
+    <a routerLink="/products">Tiếp tục mua hàng</a>
+  </div>
+} @else {
+  <form #checkout="ngForm" (ngSubmit)="submit()" class="checkout-layout">
+    <section class="panel">
+      <h2>Thông tin người nhận</h2>
+      <label
+        >Họ tên<input
+          name="fullName"
+          [(ngModel)]="form.fullName"
+          required
+          maxlength="200"
+          autocomplete="name" /></label
+      ><label
+        >Số điện thoại<input
+          name="phone"
+          [(ngModel)]="form.phone"
+          required
+          type="tel"
+          autocomplete="tel" /></label
+      ><label
+        >Địa chỉ nhận hàng<textarea
+          name="address"
+          [(ngModel)]="form.address"
+          required
+          maxlength="500"
+          autocomplete="street-address"
+        ></textarea>
+      </label>
+      <h2>Phương thức thanh toán</h2>
+      <p class="payment-method">● COD — Thanh toán khi nhận hàng</p>
+    </section>
+    <aside class="panel">
+      <h2>Đơn hàng của bạn</h2>
+      @for (item of cart().items; track item.productId) {
+        <div class="summary-row">
+          <span
+            >{{ item.name }} × {{ item.quantity
+            }}<small>{{ item.price | number: '1.0-0' }} ₫ / sản phẩm</small></span
+          ><strong>{{ item.price * item.quantity | number: '1.0-0' }} ₫</strong>
+        </div>
+      }
+      <div class="summary-row total">
+        <span>Tổng tiền</span><strong>{{ cart().total | number: '1.0-0' }} ₫</strong>
+      </div>
+      <button [disabled]="checkout.invalid || busy()">
+        {{ busy() ? 'Đang đặt hàng…' : 'Xác nhận đặt hàng' }}
+      </button>
+      <p><a routerLink="/cart">← Quay lại giỏ hàng</a></p>
+    </aside>
+  </form>
+}
