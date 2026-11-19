@@ -1,0 +1,58 @@
+<div class="page-heading">
+  <div>
+    <span class="eyebrow">BỘ SƯU TẬP ĐIỆN THOẠI</span>
+    <h1>Tìm chiếc điện thoại của bạn</h1>
+    <p class="muted">Khám phá theo tên, thương hiệu hoặc tính năng yêu thích.</p>
+  </div>
+  <span class="badge">{{ products().length }} sản phẩm</span>
+</div>
+<form class="filter panel" (ngSubmit)="find()">
+  <input
+    name="search"
+    [(ngModel)]="search"
+    placeholder="Ví dụ: iPhone, Samsung..."
+    aria-label="Tìm kiếm sản phẩm"
+  /><button>Tìm kiếm</button><a routerLink="/products">Tất cả</a>
+</form>
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (message()) {
+  <p class="success" role="status">{{ message() }} <a routerLink="/cart">Xem giỏ hàng →</a></p>
+}
+@if (loading()) {
+  <p class="empty">Đang tải sản phẩm…</p>
+} @else {
+  <div class="product-grid">
+    @for (product of products(); track product._id) {
+      <article class="product-card">
+        <a [routerLink]="['/products/detail', product._id]" class="product-image"
+          ><img
+            [src]="product.image || '/phone-placeholder.svg'"
+            [alt]="product.name"
+            (error)="imageError($event)"
+            loading="lazy"
+        /></a>
+        <div class="product-content">
+          <span class="eyebrow">{{ product.brand }}</span>
+          <h2>
+            <a [routerLink]="['/products/detail', product._id]">{{ product.name }}</a>
+          </h2>
+          <strong class="price">{{ product.price | number: '1.0-0' }} ₫</strong>
+          <p class="muted">
+            {{ product.stock > 0 ? 'Còn ' + product.stock + ' sản phẩm' : 'Hết hàng' }}
+          </p>
+          <button
+            class="secondary"
+            (click)="add(product)"
+            [disabled]="product.stock < 1 || !!adding()"
+          >
+            Thêm vào giỏ
+          </button>
+        </div>
+      </article>
+    } @empty {
+      <p class="empty">Chưa có sản phẩm phù hợp.</p>
+    }
+  </div>
+}

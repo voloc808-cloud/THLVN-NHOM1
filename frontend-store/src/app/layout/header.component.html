@@ -1,0 +1,29 @@
+<div class="topbar">Khám phá điện thoại dành cho bạn <span>Thanh toán COD</span></div>
+<header>
+  <a class="logo" routerLink="/">PHONE<span>STORE</span><small>YOUR NEXT CONNECTION</small></a>
+  <nav aria-label="Điều hướng chính">
+    <a routerLink="/" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active"
+      >Trang chủ</a
+    ><a routerLink="/products" routerLinkActive="active">Sản phẩm</a>
+  </nav>
+  <form (ngSubmit)="find()" class="search">
+    <input
+      name="search"
+      [(ngModel)]="search"
+      placeholder="Tìm điện thoại, hãng..."
+      aria-label="Tìm sản phẩm"
+    /><button aria-label="Tìm kiếm">Tìm</button>
+  </form>
+  <div class="actions">
+    <a routerLink="/cart">Giỏ hàng</a><a routerLink="/notifications">Thông báo</a>
+    @if (auth.user()) {
+      <a routerLink="/profile">{{ auth.user()?.fullName }}</a>
+      @if (auth.isAdmin()) {
+        <a routerLink="/admin">Admin</a>
+      }
+      <button class="text-button" (click)="logout()">Đăng xuất</button>
+    } @else {
+      <a routerLink="/login">Đăng nhập</a>
+    }
+  </div>
+</header>

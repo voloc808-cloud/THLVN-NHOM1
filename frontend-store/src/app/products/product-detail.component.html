@@ -1,0 +1,54 @@
+<a routerLink="/products" class="back-link">← Tất cả điện thoại</a>
+@if (error()) {
+  <p class="error" role="alert">{{ error() }}</p>
+}
+@if (loading()) {
+  <p class="empty">Đang tải sản phẩm…</p>
+}
+@if (product(); as p) {
+  <section class="detail panel">
+    <div class="image">
+      <img
+        [src]="p.image || '/phone-placeholder.svg'"
+        [alt]="p.name"
+        (error)="imageError($event)"
+      />
+    </div>
+    <div>
+      <span class="eyebrow">{{ p.brand }}</span>
+      <h1>{{ p.name }}</h1>
+      <p class="price">{{ p.price | number: '1.0-0' }} ₫</p>
+      <p class="description">{{ p.description }}</p>
+      <p class="badge">Còn {{ p.stock }} sản phẩm</p>
+      <label>Số lượng<input type="number" min="1" [max]="p.stock" [(ngModel)]="quantity" /></label>
+      <div class="button-row">
+        <button
+          (click)="addToCart()"
+          [disabled]="busy() || p.stock < 1 || quantity < 1 || quantity > p.stock"
+        >
+          Thêm vào giỏ</button
+        ><button
+          class="secondary"
+          (click)="addToCart(true)"
+          [disabled]="busy() || p.stock < 1 || quantity < 1 || quantity > p.stock"
+        >
+          Mua ngay
+        </button>
+      </div>
+      @if (message()) {
+        <p class="success">{{ message() }} <a routerLink="/cart">Xem giỏ →</a></p>
+      }
+    </div>
+  </section>
+  <section class="panel specs">
+    <h2>Thông số kỹ thuật</h2>
+    @for (spec of p.specs; track $index) {
+      <div>
+        <strong>{{ spec.key }}</strong
+        ><span>{{ spec.value }}</span>
+      </div>
+    } @empty {
+      <p class="muted">Thông số đang được cập nhật.</p>
+    }
+  </section>
+}
