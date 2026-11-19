@@ -1,0 +1,48 @@
+<span class="eyebrow">TÀI KHOẢN</span>
+<h1>Trang cá nhân</h1>
+<p><a routerLink="/orders">Xem lịch sử đơn hàng →</a></p>
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+@if (message()) {
+  <p class="success">{{ message() }}</p>
+}
+<div class="profile-layout">
+  <form class="panel" #profile="ngForm" (ngSubmit)="save()">
+    <h2>Thông tin của bạn</h2>
+    @if (form.avatar) {
+      <img class="avatar" [src]="form.avatar" alt="Ảnh đại diện" />
+    }
+    <label>Họ tên<input name="fullName" [(ngModel)]="form.fullName" required /></label
+    ><label>Email<input name="email" [(ngModel)]="form.email" type="email" required email /></label
+    ><label>Số điện thoại<input name="phone" [(ngModel)]="form.phone" type="tel" required /></label
+    ><label>Địa chỉ<textarea name="address" [(ngModel)]="form.address" required></textarea></label
+    ><label
+      >URL ảnh đại diện (tùy chọn)<input
+        name="avatar"
+        [(ngModel)]="form.avatar"
+        type="url" /></label
+    ><button [disabled]="profile.invalid || busy()">Lưu thông tin</button>
+  </form>
+  <form class="panel" #passwordForm="ngForm" (ngSubmit)="password()">
+    <h2>Đổi mật khẩu</h2>
+    <label
+      >Mật khẩu hiện tại<input
+        name="currentPassword"
+        [(ngModel)]="currentPassword"
+        type="password"
+        required
+        autocomplete="current-password" /></label
+    ><label
+      >Mật khẩu mới<input
+        name="newPassword"
+        [(ngModel)]="newPassword"
+        type="password"
+        required
+        minlength="8"
+        autocomplete="new-password"
+    /></label>
+    <p class="muted">Sau khi đổi mật khẩu, vui lòng đăng nhập lại.</p>
+    <button [disabled]="passwordForm.invalid || busy()">Đổi mật khẩu</button>
+  </form>
+</div>
