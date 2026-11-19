@@ -1,0 +1,17 @@
+main {
+  min-height: 72vh;
+  padding-top: 32px;
+  padding-bottom: 56px;
+}
+footer {
+  padding: 40px max(24px, calc((100vw - 1200px) / 2));
+  background: #101d32;
+  color: #dbe4f3;
+}
+footer span {
+  color: #61d8b0;
+}
+footer p,
+footer small {
+  color: #a9b9ce;
+}
